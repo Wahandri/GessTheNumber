@@ -1,3 +1,6 @@
 body {
-  background-color: rgb(236, 220, 201);
+  background-image: url("./images/tablon.jpg");
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
