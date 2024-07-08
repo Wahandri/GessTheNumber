@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/static/css/main.95b41025.css",
+    "main.js": "/static/js/main.8563cf33.js",
+    "static/media/tablon.jpg": "/static/media/tablon.bf775b1109110ff3f028.jpg",
+    "static/media/logotipo.png": "/static/media/logotipo.657f8a6a4c97b3e76f3c.png",
+    "static/media/posit.png": "/static/media/posit.677d18d8a6eb29590be4.png",
+    "static/media/pokemonVictoria.mp3": "/static/media/pokemonVictoria.64d7507041a5ba77908b.mp3",
+    "static/media/pokemonNext.mp3": "/static/media/pokemonNext.3dc0430f1122811617e6.mp3",
+    "static/media/FingerPaint-Regular.ttf": "/static/media/FingerPaint-Regular.3c3a9cdbff527a1cdb37.ttf",
+    "static/media/posit.jpg": "/static/media/posit.e5e5a07e75a1e55ff3f2.jpg",
+    "static/media/fondoPizarra.jpg": "/static/media/fondoPizarra.34b648e52358a1cfefe1.jpg",
+    "static/media/trompetaComedia.mp3": "/static/media/trompetaComedia.a49813042eb6905ed005.mp3",
+    "static/media/flecha-arriba.png": "/static/media/flecha-arriba.5c68a4df2a5fcc8b6a15.png",
+    "static/media/flecha-hacia-abajo.png": "/static/media/flecha-hacia-abajo.b4b3dc50d7340b76f29f.png",
+    "static/media/linkedin.png": "/static/media/linkedin.032cf8a63be2f0f4d425.png",
+    "index.html": "/index.html",
+    "main.95b41025.css.map": "/static/css/main.95b41025.css.map",
+    "main.8563cf33.js.map": "/static/js/main.8563cf33.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.95b41025.css",
+    "static/js/main.8563cf33.js"
+  ]
+}
