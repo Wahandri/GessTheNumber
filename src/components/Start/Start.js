@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import positTitle from "../../images/posit.png"
 import "./Start.css";
 import MAS from "../../images/flecha-arriba.png";
@@ -16,7 +16,7 @@ export default function Start() {
     const [historial, setHistorial] = useState([]);
     const [totalIntentos, setTotalIntentos] = useState(0);
     const [numeroAleatorio, setNumeroAleatorio] = useState(generarNumeroAleatorio(1, 10));
-    const [imagenFlecha, setImagenFlecha] = useState(null);
+    const [setImagenFlecha] = useState(null);
     const [juegoTerminado, setJuegoTerminado] = useState(false);
     const audioFinal = new Audio(victorySound);
     const audioError = new Audio(defeatSound);
