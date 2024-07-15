@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import positTitle from "../../images/posit.png"
+import positTitle from "../../images/posit.png";
 import "./Start.css";
 import MAS from "../../images/flecha-arriba.png";
 import MENOS from "../../images/flecha-hacia-abajo.png";
@@ -16,9 +16,9 @@ export default function Start() {
     const [historial, setHistorial] = useState([]);
     const [totalIntentos, setTotalIntentos] = useState(0);
     const [numeroAleatorio, setNumeroAleatorio] = useState(generarNumeroAleatorio(1, 10));
-    const [ setImagenFlecha] = useState(null); // Corregido aquí
+    const [imagenFlecha, setImagenFlecha] = useState(null); // Estado para la imagen de la flecha
     const [juegoTerminado, setJuegoTerminado] = useState(false);
-    const [mostrarBotonReinicio, setMostrarBotonReinicio] = useState(false); // Estado para mostrar el botón de reinicio
+    const [mostrarBotonReinicio, setMostrarBotonReinicio] = useState(false);
     const audioFinal = new Audio(victorySound);
     const audioNext = new Audio(nextLevelSound);
 
@@ -56,7 +56,7 @@ export default function Start() {
         setHistorial([]);
         setTotalIntentos(0);
         setNumeroAleatorio(generarNumeroAleatorio(1, actualizarDificultad()));
-        setImagenFlecha(null); // Aquí reinicias el estado imagenFlecha
+        setImagenFlecha(null); // Reiniciar el estado de imagenFlecha
         setJuegoTerminado(false);
         setMostrarBotonReinicio(false); // Ocultar el botón de reinicio al reiniciar el juego
     };
@@ -80,11 +80,13 @@ export default function Start() {
                 mensajePrincipal = `El número que buscas es MAYOR que ${valorInput}.`;
                 mensajeSecundario = `Del 1 a ${actualizarDificultad()}`
                 flecha = <img className='flechita' src={MAS} alt=''/>;
+                setImagenFlecha(MAS); // Establecer la imagen de la flecha
                 setTotalIntentos(totalIntentos + 1);
             } else if (numeroUsuario > numeroAleatorio) {
                 mensajePrincipal = `El número que buscas es MENOR que ${valorInput}.`;
                 mensajeSecundario = `Del 1 a ${actualizarDificultad()}`
                 flecha = <img className='flechita' src={MENOS} alt=''/>;
+                setImagenFlecha(MENOS); // Establecer la imagen de la flecha
                 setTotalIntentos(totalIntentos + 1);
             } else if (nivel < 10) {
                 setValorInput("");
@@ -177,8 +179,8 @@ export default function Start() {
                 <div className='insideBoard flex'>
                     {mensaje}
                     {mostrarBotonReinicio && (
-                <button className='custom-button' onClick={reiniciarJuego}>Volver a jugar</button>
-            )}
+                        <button className='custom-button' onClick={() => {reiniciarJuego(); setMostrarBotonReinicio(false);}}>Volver a jugar</button>
+                    )}
                 </div>
             </div>
             <div>
@@ -200,5 +202,3 @@ export default function Start() {
         </div>
     );
 }
-
-
