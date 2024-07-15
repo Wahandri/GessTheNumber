@@ -5,8 +5,8 @@ import MAS from "../../images/flecha-arriba.png";
 import MENOS from "../../images/flecha-hacia-abajo.png";
 import Footer from "../Footer/Footer";
 import victorySound from "../../sounds/pokemonVictoria.mp3";
-import defeatSound from "../../sounds/trompetaComedia.mp3";
 import nextLevelSound from "../../sounds/pokemonNext.mp3";
+import VideoPopup from "../VideoPopup/VideoPopup";
 
 export default function Start() {
     const [nivel, setNivel] = useState(1);
@@ -16,11 +16,21 @@ export default function Start() {
     const [historial, setHistorial] = useState([]);
     const [totalIntentos, setTotalIntentos] = useState(0);
     const [numeroAleatorio, setNumeroAleatorio] = useState(generarNumeroAleatorio(1, 10));
-    const [setImagenFlecha] = useState(null);
+    const [ setImagenFlecha] = useState(null); // Corregido aquí
     const [juegoTerminado, setJuegoTerminado] = useState(false);
+    const [mostrarBotonReinicio, setMostrarBotonReinicio] = useState(false); // Estado para mostrar el botón de reinicio
     const audioFinal = new Audio(victorySound);
-    const audioError = new Audio(defeatSound);
     const audioNext = new Audio(nextLevelSound);
+
+    const [isVideoOpen, setVideoOpen] = useState(false);
+
+    const handleOpenVideo = () => {
+        setVideoOpen(true);
+    };
+
+    const handleCloseVideo = () => {
+        setVideoOpen(false);
+    };
 
     // Numero aleatorio
     function generarNumeroAleatorio(min, max) {
@@ -46,8 +56,9 @@ export default function Start() {
         setHistorial([]);
         setTotalIntentos(0);
         setNumeroAleatorio(generarNumeroAleatorio(1, actualizarDificultad()));
-        setImagenFlecha(null);
+        setImagenFlecha(null); // Aquí reinicias el estado imagenFlecha
         setJuegoTerminado(false);
+        setMostrarBotonReinicio(false); // Ocultar el botón de reinicio al reiniciar el juego
     };
 
     // Logica del juego
@@ -124,12 +135,9 @@ export default function Start() {
 
             // Intentos agotados
             if (intentos === 1 && !juegoTerminado) {
-                audioError.play();
                 setMensaje(`¡Oh no! Has agotado tus intentos. Has perdido. Vuelve a intentarlo.`);
-                
-                setTimeout(() => {
-                    reiniciarJuego();
-                }, 3000);
+                setMostrarBotonReinicio(true);
+                handleOpenVideo(); 
             } else if (!juegoTerminado) {
                 setMensaje(
                     <>
@@ -142,8 +150,8 @@ export default function Start() {
                 setMensaje(
                     <>
                     <p className='msj1'>{mensajePrincipal}</p>
-                    <button>Volver a jugar</button>
-                </>
+                    <button className='custom-button' onClick={reiniciarJuego}>Volver a jugar</button>
+                    </>
                 )
             }
         }
@@ -168,6 +176,9 @@ export default function Start() {
                 </div>
                 <div className='insideBoard flex'>
                     {mensaje}
+                    {mostrarBotonReinicio && (
+                <button className='custom-button' onClick={reiniciarJuego}>Volver a jugar</button>
+            )}
                 </div>
             </div>
             <div>
@@ -183,9 +194,11 @@ export default function Start() {
                 />
                 <button className='custom-button' onClick={checkingNumber}>Enviar</button>
             </div>
-            <Footer/>
             
-
+            <VideoPopup isOpen={isVideoOpen} onClose={handleCloseVideo} />
+            <Footer/>
         </div>
     );
 }
+
+
