@@ -16,7 +16,7 @@ export default function Start() {
     const [historial, setHistorial] = useState([]);
     const [totalIntentos, setTotalIntentos] = useState(0);
     const [numeroAleatorio, setNumeroAleatorio] = useState(generarNumeroAleatorio(1, 10));
-    const [imagenFlecha, setImagenFlecha] = useState(null); // Estado para la imagen de la flecha
+    const [imagenFlecha, setImagenFlecha] = useState(null); 
     const [juegoTerminado, setJuegoTerminado] = useState(false);
     const [mostrarBotonReinicio, setMostrarBotonReinicio] = useState(false);
     const audioFinal = new Audio(victorySound);
@@ -32,22 +32,18 @@ export default function Start() {
         setVideoOpen(false);
     };
 
-    // Numero aleatorio
     function generarNumeroAleatorio(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    // Subir de nivel
     const actualizarDificultad = () => {
         return 10 * Math.pow(2, nivel - 1);
     };
 
-    // Numero seleccionado
     const manejarCambioInput = (event) => {
         setValorInput(event.target.value);
     };
 
-    // Reiniciar juego
     const reiniciarJuego = () => {
         setNivel(1);
         setValorInput('');
@@ -56,12 +52,11 @@ export default function Start() {
         setHistorial([]);
         setTotalIntentos(0);
         setNumeroAleatorio(generarNumeroAleatorio(1, actualizarDificultad()));
-        setImagenFlecha(null); // Reiniciar el estado de imagenFlecha
+        setImagenFlecha(null);
         setJuegoTerminado(false);
-        setMostrarBotonReinicio(false); // Ocultar el botón de reinicio al reiniciar el juego
+        setMostrarBotonReinicio(false);
     };
 
-    // Logica del juego
     const checkingNumber = () => {
         const numeroUsuario = parseInt(valorInput, 10);
 
@@ -75,34 +70,37 @@ export default function Start() {
             let mensajePrincipal = '';
             let mensajeSecundario = '';
             let flecha = null;
+            let nuevoHistorial = [...historial];
 
             if (numeroUsuario < numeroAleatorio) {
                 mensajePrincipal = `El número que buscas es MAYOR que ${valorInput}.`;
                 mensajeSecundario = `Del 1 a ${actualizarDificultad()}`
                 flecha = <img className='flechita' src={MAS} alt=''/>;
-                setImagenFlecha(MAS); // Establecer la imagen de la flecha
+                setImagenFlecha(MAS);
                 setTotalIntentos(totalIntentos + 1);
+
+                // Agregar al historial
+                nuevoHistorial.push(`Mayor que ${numeroUsuario}`);
             } else if (numeroUsuario > numeroAleatorio) {
                 mensajePrincipal = `El número que buscas es MENOR que ${valorInput}.`;
                 mensajeSecundario = `Del 1 a ${actualizarDificultad()}`
                 flecha = <img className='flechita' src={MENOS} alt=''/>;
-                setImagenFlecha(MENOS); // Establecer la imagen de la flecha
+                setImagenFlecha(MENOS);
                 setTotalIntentos(totalIntentos + 1);
+
+                // Agregar al historial
+                nuevoHistorial.push(`Menor que ${numeroUsuario}`);
             } else if (nivel < 10) {
                 setValorInput("");
                 setIntentos(10);
 
-                // Subir de nivel
                 setNivel(nivel + 1);
 
-                // Agregar historial de numeros
                 setTotalIntentos(totalIntentos + 1);
 
-                // Generar nuevo número aleatorio
                 const nuevoNumeroAleatorio = generarNumeroAleatorio(1, actualizarDificultad());
                 setNumeroAleatorio(nuevoNumeroAleatorio);
 
-                // Mostrar mensaje durante 3 segundos
                 audioNext.play();
                 setMensaje(
                     <>
@@ -111,19 +109,19 @@ export default function Start() {
                     ¡Subes de nivel!
                     </>
                 );
+
+                // Reiniciar historial para el nuevo nivel
+                setHistorial([]);
                 
                 setTimeout(() => {
                     setMensaje(`Introduce un número del 1 al ${actualizarDificultad() * 2}`);
                 }, 1500);
                 
-                // Salir de la función para evitar la actualización duplicada de estado
                 return;
             } else {
                 setTotalIntentos(totalIntentos + 1);
                 setJuegoTerminado(true);
-                setHistorial([...historial, `Nivel ${nivel}: ${10 - intentos} intentos`]);
 
-                
                 mensajePrincipal = `¡Enhorabuena! Has completado el juego en ${totalIntentos + 1} intentos`;
                 audioFinal.play();
                 setMensaje(
@@ -131,11 +129,12 @@ export default function Start() {
                         <p className='msj1'>{mensajePrincipal}</p>
                         <button className='custom-button' onClick={() => {reiniciarJuego()}}>Volver a jugar</button>
                     </>
-                )
+                );
                 return;
             }
 
-            // Intentos agotados
+            setHistorial(nuevoHistorial);
+
             if (intentos === 1 && !juegoTerminado) {
                 setMensaje(`¡Oh no! Has agotado tus intentos. Has perdido. Vuelve a intentarlo.`);
                 setMostrarBotonReinicio(true);
@@ -148,19 +147,10 @@ export default function Start() {
                         <p className='msj2'>{mensajeSecundario}</p>
                     </>
                 );
-            } else if (juegoTerminado) {
-                setMensaje(
-                    <>
-                    <p className='msj1'>{mensajePrincipal}</p>
-                    <button className='custom-button' onClick={reiniciarJuego}>Volver a jugar</button>
-                    </>
-                )
             }
         }
     };
 
-
-    // Usar ENTER para 
     const manejarEnter = (event) => {
         if (event.key === 'Enter') {
             checkingNumber();
@@ -196,7 +186,14 @@ export default function Start() {
                 />
                 <button className='custom-button' onClick={checkingNumber}>Enviar</button>
             </div>
-            
+            <div className='historial'>
+                <h2>HISTORIAL</h2>
+                <ul>
+                    {historial.map((intento, index) => (
+                        <li key={index}>{intento}</li>
+                    ))}
+                </ul>
+            </div>
             <VideoPopup isOpen={isVideoOpen} onClose={handleCloseVideo} />
             <Footer/>
         </div>
